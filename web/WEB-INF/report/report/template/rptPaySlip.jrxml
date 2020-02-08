@@ -1,0 +1,1114 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="rptPaySlip"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="595"
+		 pageHeight="864"
+		 columnWidth="567"
+		 columnSpacing="0"
+		 leftMargin="21"
+		 rightMargin="7"
+		 topMargin="21"
+		 bottomMargin="0"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["C:\\Program Files\\mktgReport\\report\\template\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="m_route" isForPrompting="false" class="java.lang.Integer"/>
+	<parameter name="m_date" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="ContSales" isForPrompting="false" class="java.lang.String"/>
+	<queryString><![CDATA[select indent.id,
+indent.quantity,
+indent.cacr,
+indent.netqty,
+indent.leakage,
+indent.returnmilk,
+indent.netamount,
+indent.taxamt,
+indent.subsidy,
+indent.route,
+indent.exceamt,
+indent.lessamt,
+indent.idate,
+indent.prodtype,
+indent.product,
+indent.ratetype,
+indent.prodname,
+indent.rate,
+indent.paidatbank,
+route.route 'rtnm' 
+from indent,route 
+where indent.route = route.id 
+and indent.route = $P{m_route} 
+and indent.idate = $P{m_date} 
+and indent.saletype = 1   
+order by ratetype,product,prodtype,route]]></queryString>
+
+	<field name="id" class="java.lang.Long"/>
+	<field name="quantity" class="java.math.BigDecimal"/>
+	<field name="cacr" class="java.lang.String"/>
+	<field name="netqty" class="java.math.BigDecimal"/>
+	<field name="leakage" class="java.math.BigDecimal"/>
+	<field name="returnmilk" class="java.math.BigDecimal"/>
+	<field name="netamount" class="java.math.BigDecimal"/>
+	<field name="taxamt" class="java.math.BigDecimal"/>
+	<field name="subsidy" class="java.math.BigDecimal"/>
+	<field name="route" class="java.lang.Long"/>
+	<field name="exceamt" class="java.math.BigDecimal"/>
+	<field name="lessamt" class="java.math.BigDecimal"/>
+	<field name="idate" class="java.sql.Date"/>
+	<field name="prodtype" class="java.lang.Integer"/>
+	<field name="product" class="java.lang.Long"/>
+	<field name="ratetype" class="java.lang.Integer"/>
+	<field name="prodname" class="java.lang.String"/>
+	<field name="rate" class="java.math.BigDecimal"/>
+	<field name="paidatbank" class="java.math.BigDecimal"/>
+	<field name="rtnm" class="java.lang.String"/>
+
+	<variable name="TotalQty" class="java.lang.Double" resetType="Group" resetGroup="prod" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{quantity}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="CrQty" class="java.lang.Double" resetType="Group" resetGroup="prod" calculation="Sum">
+		<variableExpression><![CDATA[new Double(( $F{cacr}.compareTo( "Credit" ) == 0 ? $F{netqty}.doubleValue() : 0 ))]]></variableExpression>
+	</variable>
+	<variable name="TotLeakage" class="java.lang.Double" resetType="Group" resetGroup="prod" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{leakage}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="TotalRetn" class="java.lang.Double" resetType="Group" resetGroup="prod" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{returnmilk}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="TotAmount" class="java.lang.Double" resetType="Group" resetGroup="prod" calculation="Sum">
+		<variableExpression><![CDATA[new Double(( $F{cacr}.compareTo("Cash") == 0 ? $F{netamount}.doubleValue() 
++ $F{taxamt}.doubleValue() - $F{subsidy}.doubleValue(): 0 ))]]></variableExpression>
+	</variable>
+	<variable name="TotSubAmt" class="java.lang.Double" resetType="Group" resetGroup="prod" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{subsidy}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="GrTotal" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[new Double(($F{cacr}.compareTo("Credit") == 0  
+	? 0 : $F{netamount}.doubleValue() 
+	+ $F{taxamt}.doubleValue()
+	-$F{subsidy}.doubleValue()) )]]></variableExpression>
+	</variable>
+	<variable name="BalanceAmt" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{exceamt}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="LessAmt" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{lessamt}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="vTotalAmount" class="java.lang.Double" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new Double($V{GrTotal}.doubleValue() 
+	+ $V{BalanceAmt}.doubleValue() 
+	- $V{LessAmt}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="paidAtBank" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{paidatbank}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="netAmount" class="java.lang.Double" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new Double($V{paidAtBank}.doubleValue() + $V{vTotalAmount}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="hCashQty" class="java.lang.Double" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new Double($V{TotalQty}.doubleValue() 
+	- $V{CrQty}.doubleValue()
+	- $V{TotLeakage}.doubleValue() 
+	- $V{TotalRetn}.doubleValue())]]></variableExpression>
+	</variable>
+
+		<group  name="route" >
+			<groupExpression><![CDATA[$F{route}]]></groupExpression>
+			<groupHeader>
+			<band height="32"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="127"
+						y="0"
+						width="94"
+						height="15"
+						key="staticText-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[Cont/Salesman :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="2"
+						y="0"
+						width="38"
+						height="15"
+						key="staticText-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[Route :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="3"
+						y="17"
+						width="110"
+						height="15"
+						key="staticText-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[Milk / Product]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="103"
+						y="17"
+						width="62"
+						height="15"
+						key="staticText-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[Total Qty.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="167"
+						y="17"
+						width="47"
+						height="15"
+						key="staticText-4"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[Cr.Qty]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="219"
+						y="17"
+						width="51"
+						height="15"
+						key="staticText-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[Leakage]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="271"
+						y="17"
+						width="50"
+						height="15"
+						key="staticText-6"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[Retn.Qty]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="429"
+						y="17"
+						width="50"
+						height="15"
+						key="staticText-7"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[Sub.Amt]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="486"
+						y="17"
+						width="70"
+						height="15"
+						key="staticText-8"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[Net.Amount]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="3"
+						y="16"
+						width="554"
+						height="0"
+						key="line-9"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="17"
+						width="0"
+						height="15"
+						key="line-14"
+						stretchType="RelativeToTallestObject"/>
+					<graphicElement stretchType="RelativeToTallestObject" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="3"
+						y="30"
+						width="554"
+						height="0"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="326"
+						y="17"
+						width="50"
+						height="15"
+						key="staticText-14"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[Cash.Qty]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="445"
+						y="0"
+						width="42"
+						height="15"
+						key="staticText-15"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[Date :]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="479"
+						y="0"
+						width="79"
+						height="16"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{idate}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="557"
+						y="17"
+						width="0"
+						height="15"
+						key="line-20"
+						stretchType="RelativeToTallestObject"/>
+					<graphicElement stretchType="RelativeToTallestObject" pen="Thin"/>
+				</line>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="220"
+						y="0"
+						width="216"
+						height="16"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ContSales}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="41"
+						y="0"
+						width="129"
+						height="15"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{rtnm}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="381"
+						y="15"
+						width="45"
+						height="15"
+						key="staticText-32"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[Rate]]></text>
+				</staticText>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="291"  isSplitAllowed="true" >
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="0"
+						y="0"
+						width="330"
+						height="16"
+						key="subreport-1"
+						positionType="Float"/>
+					<subreportParameter  name="m_route">
+						<subreportParameterExpression><![CDATA[new Long($F{route}.longValue())]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="m_date">
+						<subreportParameterExpression><![CDATA[new String($F{idate}.toString())]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "rptPaySlip_srDetails.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="330"
+						y="0"
+						width="226"
+						height="16"
+						key="subreport-2"
+						positionType="Float"/>
+					<subreportParameter  name="m_route">
+						<subreportParameterExpression><![CDATA[new Long($F{route}.longValue())]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="m_date">
+						<subreportParameterExpression><![CDATA[new String($F{idate}.toString())]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "rptPaySlip_totals.jasper"]]></subreportExpression>
+				</subreport>
+				<staticText>
+					<reportElement
+						x="150"
+						y="45"
+						width="70"
+						height="16"
+						key="staticText-11"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[Checked By]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="279"
+						y="45"
+						width="120"
+						height="16"
+						key="staticText-12"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[Salesman/Contractor]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="435"
+						y="109"
+						width="50"
+						height="15"
+						key="staticText-13"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[Cashier]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="17"
+						width="554"
+						height="0"
+						key="line-19"
+						positionType="Float"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="21"
+						y="45"
+						width="70"
+						height="16"
+						key="staticText-16"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[Prepared By]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="30"
+						y="79"
+						width="60"
+						height="20"
+						key="staticText-17"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[1000   X ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="30"
+						y="99"
+						width="60"
+						height="20"
+						key="staticText-18"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[500   X ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="30"
+						y="120"
+						width="60"
+						height="20"
+						key="staticText-19"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[100   X ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="30"
+						y="142"
+						width="60"
+						height="20"
+						key="staticText-20"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[50   X ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="30"
+						y="163"
+						width="60"
+						height="20"
+						key="staticText-21"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[20   X ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="30"
+						y="184"
+						width="60"
+						height="20"
+						key="staticText-22"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[10   X ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="30"
+						y="205"
+						width="60"
+						height="20"
+						key="staticText-23"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[5   X ]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="20"
+						y="78"
+						width="200"
+						height="0"
+						key="line-21"
+						positionType="Float"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="20"
+						y="98"
+						width="200"
+						height="0"
+						key="line-22"
+						positionType="Float"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="19"
+						y="119"
+						width="200"
+						height="0"
+						key="line-23"
+						positionType="Float"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="19"
+						y="141"
+						width="200"
+						height="0"
+						key="line-24"
+						positionType="Float"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="21"
+						y="64"
+						width="89"
+						height="16"
+						key="staticText-24"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[Denomination :]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="19"
+						y="162"
+						width="200"
+						height="0"
+						key="line-25"
+						positionType="Float"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="19"
+						y="183"
+						width="200"
+						height="0"
+						key="line-26"
+						positionType="Float"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="20"
+						y="204"
+						width="200"
+						height="0"
+						key="line-27"
+						positionType="Float"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="20"
+						y="225"
+						width="200"
+						height="0"
+						key="line-28"
+						positionType="Float"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="30"
+						y="226"
+						width="70"
+						height="20"
+						key="staticText-25"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[TOTAL]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="30"
+						y="247"
+						width="70"
+						height="20"
+						key="staticText-26"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[Conis ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="30"
+						y="268"
+						width="70"
+						height="20"
+						key="staticText-27"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[GRAND TOTAL]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="133"
+						y="76"
+						width="0"
+						height="215"
+						key="line-29"
+						positionType="Float"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="20"
+						y="246"
+						width="200"
+						height="0"
+						key="line-30"
+						positionType="Float"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="19"
+						y="267"
+						width="200"
+						height="0"
+						key="line-31"
+						positionType="Float"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="20"
+						y="76"
+						width="0"
+						height="215"
+						key="line-32"
+						positionType="Float"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="21"
+						y="289"
+						width="200"
+						height="0"
+						key="line-33"
+						positionType="Float"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="220"
+						y="76"
+						width="0"
+						height="215"
+						key="line-34"
+						positionType="Float"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="405"
+						y="45"
+						width="50"
+						height="16"
+						key="staticText-28"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[GR.NO : ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="405"
+						y="71"
+						width="50"
+						height="16"
+						key="staticText-29"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[GR.DATE  : ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="455"
+						y="45"
+						width="80"
+						height="16"
+						key="staticText-30"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[__________]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="454"
+						y="71"
+						width="80"
+						height="16"
+						key="staticText-31"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New"/>
+					</textElement>
+				<text><![CDATA[__________]]></text>
+				</staticText>
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="prodType" >
+			<groupExpression><![CDATA[$F{prodtype}]]></groupExpression>
+			<groupHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="prod" >
+			<groupExpression><![CDATA[$F{product}]]></groupExpression>
+			<groupHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="ratetype" >
+			<groupExpression><![CDATA[$F{ratetype}]]></groupExpression>
+			<groupHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="20"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="3"
+						y="0"
+						width="110"
+						height="20"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font fontName="Courier New"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{prodname}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="115"
+						y="0"
+						width="50"
+						height="20"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{TotalQty}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="167"
+						y="0"
+						width="50"
+						height="20"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{CrQty}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="219"
+						y="0"
+						width="50"
+						height="20"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{TotLeakage}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="271"
+						y="0"
+						width="50"
+						height="20"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{TotalRetn}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="486"
+						y="0"
+						width="70"
+						height="20"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{TotAmount}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="114"
+						y="0"
+						width="0"
+						height="20"
+						key="line-3"
+						stretchType="RelativeToTallestObject"/>
+					<graphicElement stretchType="RelativeToTallestObject" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="166"
+						y="0"
+						width="0"
+						height="20"
+						key="line-4"
+						stretchType="RelativeToTallestObject"/>
+					<graphicElement stretchType="RelativeToTallestObject" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="218"
+						y="0"
+						width="0"
+						height="20"
+						key="line-5"
+						stretchType="RelativeToTallestObject"/>
+					<graphicElement stretchType="RelativeToTallestObject" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="270"
+						y="0"
+						width="0"
+						height="20"
+						key="line-6"
+						stretchType="RelativeToTallestObject"/>
+					<graphicElement stretchType="RelativeToTallestObject" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="322"
+						y="0"
+						width="0"
+						height="20"
+						key="line-7"
+						stretchType="RelativeToTallestObject"/>
+					<graphicElement stretchType="RelativeToTallestObject" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="426"
+						y="0"
+						width="0"
+						height="20"
+						key="line-8"
+						stretchType="RelativeToTallestObject"/>
+					<graphicElement stretchType="RelativeToTallestObject" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="0"
+						width="0"
+						height="20"
+						key="line-12"
+						stretchType="RelativeToTallestObject"/>
+					<graphicElement stretchType="RelativeToTallestObject" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="557"
+						y="0"
+						width="0"
+						height="20"
+						key="line-13"
+						stretchType="RelativeToTallestObject"/>
+					<graphicElement stretchType="RelativeToTallestObject" pen="Thin"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="429"
+						y="0"
+						width="50"
+						height="20"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{TotSubAmt}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="326"
+						y="0"
+						width="50"
+						height="20"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{hCashQty}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="483"
+						y="0"
+						width="0"
+						height="20"
+						key="line-17"
+						stretchType="RelativeToTallestObject"/>
+					<graphicElement stretchType="RelativeToTallestObject" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="2"
+						y="18"
+						width="554"
+						height="0"
+						key="line-18"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="378"
+						y="0"
+						width="0"
+						height="20"
+						key="line-35"
+						stretchType="RelativeToTallestObject"/>
+					<graphicElement stretchType="RelativeToTallestObject" pen="Thin"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="381"
+						y="0"
+						width="45"
+						height="20"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{rate}]]></textFieldExpression>
+				</textField>
+			</band>
+			</groupFooter>
+		</group>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

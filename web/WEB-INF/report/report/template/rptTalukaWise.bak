@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="rptTalukaWise"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="576"
+		 pageHeight="864"
+		 columnWidth="516"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["C:\\Program Files\\mktgReport\\report\\template\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FROMDT" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="TODT" isForPrompting="false" class="java.lang.String"/>
+	<queryString><![CDATA[select * from taluka]]></queryString>
+
+	<field name="ID" class="java.lang.Long"/>
+	<field name="taluka" class="java.lang.String"/>
+
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="22"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="25"  isSplitAllowed="true" >
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="4"
+						y="0"
+						width="219"
+						height="18"
+						key="subreport-1"
+						positionType="Float"/>
+					<subreportParameter  name="MTALUKA">
+						<subreportParameterExpression><![CDATA[new Long($F{ID}.longValue())]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="FROMDT">
+						<subreportParameterExpression><![CDATA[new String($P{FROMDT})]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="TODT">
+						<subreportParameterExpression><![CDATA[new String($P{TODT})]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "rptTalukaWise_TalukaMilk.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="261"
+						y="0"
+						width="247"
+						height="18"
+						key="subreport-2"/>
+					<subreportParameter  name="MTALUKA">
+						<subreportParameterExpression><![CDATA[new Long($F{ID}.longValue())]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="FROMDT">
+						<subreportParameterExpression><![CDATA[new String($P{FROMDT})]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="TODT">
+						<subreportParameterExpression><![CDATA[new String($P{TODT})]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "rptTalukaWise_TalukaProd.jasper"]]></subreportExpression>
+				</subreport>
+				<line direction="BottomUp">
+					<reportElement
+						x="3"
+						y="20"
+						width="507"
+						height="1"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

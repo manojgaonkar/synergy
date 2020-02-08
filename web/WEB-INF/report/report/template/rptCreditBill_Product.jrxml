@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="rptCreditBill_Product"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="360"
+		 pageHeight="802"
+		 columnWidth="360"
+		 columnSpacing="0"
+		 leftMargin="0"
+		 rightMargin="0"
+		 topMargin="0"
+		 bottomMargin="0"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="FROMDT" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="TODT" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="CUSTID" isForPrompting="false" class="java.lang.Long"/>
+	<queryString><![CDATA[select * from indent 
+where prodtype = 2 and idate = $P{FROMDT} and customer = $P{CUSTID}]]></queryString>
+
+	<field name="id" class="java.lang.Long"/>
+	<field name="idate" class="java.sql.Date"/>
+	<field name="route" class="java.lang.Long"/>
+	<field name="customer" class="java.lang.Long"/>
+	<field name="product" class="java.lang.Long"/>
+	<field name="quantity" class="java.math.BigDecimal"/>
+	<field name="rate" class="java.math.BigDecimal"/>
+	<field name="amount" class="java.math.BigDecimal"/>
+	<field name="prodname" class="java.lang.String"/>
+	<field name="cacr" class="java.lang.String"/>
+	<field name="taluka" class="java.lang.Long"/>
+	<field name="custname" class="java.lang.String"/>
+	<field name="tax" class="java.math.BigDecimal"/>
+	<field name="taxamt" class="java.math.BigDecimal"/>
+	<field name="cst" class="java.math.BigDecimal"/>
+	<field name="cstamt" class="java.math.BigDecimal"/>
+	<field name="cess" class="java.math.BigDecimal"/>
+	<field name="cessamt" class="java.math.BigDecimal"/>
+	<field name="tcd" class="java.math.BigDecimal"/>
+	<field name="tcdamt" class="java.math.BigDecimal"/>
+	<field name="netamount" class="java.math.BigDecimal"/>
+	<field name="commi" class="java.math.BigDecimal"/>
+	<field name="commiamt" class="java.math.BigDecimal"/>
+	<field name="leakage" class="java.math.BigDecimal"/>
+	<field name="returnmilk" class="java.math.BigDecimal"/>
+	<field name="netqty" class="java.math.BigDecimal"/>
+	<field name="billno" class="java.lang.Integer"/>
+	<field name="saletype" class="java.lang.Integer"/>
+	<field name="prodtype" class="java.lang.Integer"/>
+	<field name="rtname" class="java.lang.String"/>
+	<field name="subsidy" class="java.math.BigDecimal"/>
+	<field name="lessamt" class="java.math.BigDecimal"/>
+	<field name="exceamt" class="java.math.BigDecimal"/>
+	<field name="crateout" class="java.lang.Integer"/>
+	<field name="cratein" class="java.lang.Integer"/>
+	<field name="custtype" class="java.lang.Long"/>
+	<field name="paidatbank" class="java.math.BigDecimal"/>
+	<field name="entrytype" class="java.lang.Integer"/>
+	<field name="sf" class="java.math.BigDecimal"/>
+	<field name="hl" class="java.math.BigDecimal"/>
+	<field name="moreve" class="java.lang.String"/>
+	<field name="reclock" class="java.lang.Boolean"/>
+	<field name="ratetype" class="java.lang.Integer"/>
+	<field name="grno" class="java.lang.String"/>
+	<field name="grdate" class="java.sql.Date"/>
+	<field name="gpno" class="java.lang.String"/>
+	<field name="rectimestamp" class="java.lang.String"/>
+	<field name="print" class="java.lang.Boolean"/>
+	<field name="user" class="java.lang.String"/>
+
+	<variable name="netamt" class="java.lang.Double" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new Double($F{netamount}.doubleValue() + $F{taxamt}.doubleValue())]]></variableExpression>
+	</variable>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="17"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="85"
+						y="0"
+						width="50"
+						height="16"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{netqty}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="3"
+						y="0"
+						width="100"
+						height="16"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font fontName="Courier New" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{prodname}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="139"
+						y="0"
+						width="40"
+						height="16"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{rate}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="179"
+						y="0"
+						width="55"
+						height="16"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{netamt}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

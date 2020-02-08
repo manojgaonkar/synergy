@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="rptDistributionSheet_n1_retnSheet"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="535"
+		 pageHeight="802"
+		 columnWidth="391"
+		 columnSpacing="0"
+		 leftMargin="0"
+		 rightMargin="144"
+		 topMargin="0"
+		 bottomMargin="0"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="m_route" isForPrompting="false" class="java.lang.Long"/>
+	<parameter name="m_date" isForPrompting="false" class="java.lang.String"/>
+	<queryString><![CDATA[SELECT * FROM INDENT 
+where route = $P{m_route} and idate = $P{m_date} and saletype = 1 
+order by indent.product]]></queryString>
+
+	<field name="id" class="java.lang.Long"/>
+	<field name="idate" class="java.sql.Date"/>
+	<field name="route" class="java.lang.Long"/>
+	<field name="customer" class="java.lang.Long"/>
+	<field name="product" class="java.lang.Long"/>
+	<field name="quantity" class="java.math.BigDecimal"/>
+	<field name="rate" class="java.math.BigDecimal"/>
+	<field name="amount" class="java.math.BigDecimal"/>
+	<field name="prodname" class="java.lang.String"/>
+	<field name="cacr" class="java.lang.String"/>
+	<field name="taluka" class="java.lang.Long"/>
+	<field name="custname" class="java.lang.String"/>
+	<field name="tax" class="java.math.BigDecimal"/>
+	<field name="taxamt" class="java.math.BigDecimal"/>
+	<field name="cst" class="java.math.BigDecimal"/>
+	<field name="cstamt" class="java.math.BigDecimal"/>
+	<field name="cess" class="java.math.BigDecimal"/>
+	<field name="cessamt" class="java.math.BigDecimal"/>
+	<field name="tcd" class="java.math.BigDecimal"/>
+	<field name="tcdamt" class="java.math.BigDecimal"/>
+	<field name="netamount" class="java.math.BigDecimal"/>
+	<field name="commi" class="java.math.BigDecimal"/>
+	<field name="commiamt" class="java.math.BigDecimal"/>
+	<field name="leakage" class="java.math.BigDecimal"/>
+	<field name="returnmilk" class="java.math.BigDecimal"/>
+	<field name="netqty" class="java.math.BigDecimal"/>
+	<field name="billno" class="java.lang.Integer"/>
+	<field name="saletype" class="java.lang.Integer"/>
+	<field name="prodtype" class="java.lang.Integer"/>
+	<field name="rtname" class="java.lang.String"/>
+	<field name="subsidy" class="java.math.BigDecimal"/>
+	<field name="lessamt" class="java.math.BigDecimal"/>
+	<field name="exceamt" class="java.math.BigDecimal"/>
+	<field name="crateout" class="java.lang.Integer"/>
+	<field name="cratein" class="java.lang.Integer"/>
+	<field name="custtype" class="java.lang.Long"/>
+	<field name="paidatbank" class="java.math.BigDecimal"/>
+	<field name="entrytype" class="java.lang.Integer"/>
+
+
+		<group  name="product" >
+			<groupExpression><![CDATA[$F{product}]]></groupExpression>
+			<groupHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="25"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="1"
+						width="125"
+						height="16"
+						key="textField-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Arial" isUnderline="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{prodname}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="126"
+						y="0"
+						width="0"
+						height="23"
+						key="line-1"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="0"
+						width="0"
+						height="23"
+						key="line-2"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="225"
+						y="0"
+						width="0"
+						height="23"
+						key="line-3"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="23"
+						width="369"
+						height="2"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="175"
+						y="0"
+						width="0"
+						height="23"
+						key="line-5"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="275"
+						y="0"
+						width="0"
+						height="23"
+						key="line-6"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="325"
+						y="0"
+						width="0"
+						height="23"
+						key="line-7"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="369"
+						y="0"
+						width="0"
+						height="23"
+						key="line-8"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight" pen="Thin"/>
+				</line>
+			</band>
+			</groupFooter>
+		</group>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

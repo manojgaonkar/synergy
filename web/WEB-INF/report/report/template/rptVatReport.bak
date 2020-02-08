@@ -1,0 +1,669 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="rptVatReport"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="595"
+		 pageHeight="864"
+		 columnWidth="565"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="0"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="GRDATE" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="FDT" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="FROMDT" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="TODT" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="TDT" isForPrompting="false" class="java.lang.String"/>
+	<queryString><![CDATA[select indent.* from indent 
+where indent.grdate >= $P{FROMDT} and indent.grdate <=$P{TODT} and cacr = 'Cash' 
+order by indent.product]]></queryString>
+
+	<field name="id" class="java.lang.Long"/>
+	<field name="idate" class="java.sql.Date"/>
+	<field name="route" class="java.lang.Long"/>
+	<field name="customer" class="java.lang.Long"/>
+	<field name="product" class="java.lang.Long"/>
+	<field name="quantity" class="java.math.BigDecimal"/>
+	<field name="rate" class="java.math.BigDecimal"/>
+	<field name="amount" class="java.math.BigDecimal"/>
+	<field name="prodname" class="java.lang.String"/>
+	<field name="cacr" class="java.lang.String"/>
+	<field name="taluka" class="java.lang.Long"/>
+	<field name="custname" class="java.lang.String"/>
+	<field name="tax" class="java.math.BigDecimal"/>
+	<field name="taxamt" class="java.math.BigDecimal"/>
+	<field name="cst" class="java.math.BigDecimal"/>
+	<field name="cstamt" class="java.math.BigDecimal"/>
+	<field name="cess" class="java.math.BigDecimal"/>
+	<field name="cessamt" class="java.math.BigDecimal"/>
+	<field name="tcd" class="java.math.BigDecimal"/>
+	<field name="tcdamt" class="java.math.BigDecimal"/>
+	<field name="netamount" class="java.math.BigDecimal"/>
+	<field name="commi" class="java.math.BigDecimal"/>
+	<field name="commiamt" class="java.math.BigDecimal"/>
+	<field name="leakage" class="java.math.BigDecimal"/>
+	<field name="returnmilk" class="java.math.BigDecimal"/>
+	<field name="netqty" class="java.math.BigDecimal"/>
+	<field name="billno" class="java.lang.Integer"/>
+	<field name="saletype" class="java.lang.Integer"/>
+	<field name="prodtype" class="java.lang.Integer"/>
+	<field name="rtname" class="java.lang.String"/>
+	<field name="subsidy" class="java.math.BigDecimal"/>
+	<field name="lessamt" class="java.math.BigDecimal"/>
+	<field name="exceamt" class="java.math.BigDecimal"/>
+	<field name="crateout" class="java.lang.Integer"/>
+	<field name="cratein" class="java.lang.Integer"/>
+	<field name="custtype" class="java.lang.Long"/>
+	<field name="paidatbank" class="java.math.BigDecimal"/>
+	<field name="entrytype" class="java.lang.Integer"/>
+	<field name="sf" class="java.math.BigDecimal"/>
+	<field name="hl" class="java.math.BigDecimal"/>
+	<field name="moreve" class="java.lang.String"/>
+	<field name="reclock" class="java.lang.Boolean"/>
+	<field name="ratetype" class="java.lang.Integer"/>
+	<field name="grno" class="java.lang.String"/>
+	<field name="grdate" class="java.sql.Date"/>
+	<field name="gpno" class="java.lang.String"/>
+	<field name="rectimestamp" class="java.lang.String"/>
+	<field name="print" class="java.lang.Boolean"/>
+	<field name="user" class="java.lang.String"/>
+
+	<variable name="m_qty" class="java.lang.Double" resetType="Group" resetGroup="product" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{netqty}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="amt" class="java.lang.Double" resetType="Group" resetGroup="product" calculation="Sum">
+		<variableExpression><![CDATA[new Double(($F{netamount}.doubleValue() - $F{subsidy}.doubleValue()) + $F{taxamt}.doubleValue() )]]></variableExpression>
+	</variable>
+	<variable name="vatamt" class="java.lang.Double" resetType="Group" resetGroup="product" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{taxamt}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="htTotalAmt" class="java.lang.Double" resetType="Group" resetGroup="product" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{netamount}.doubleValue()- $F{subsidy}.doubleValue() )]]></variableExpression>
+	</variable>
+	<variable name="vat" class="java.lang.String" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new String(( $F{tax}.doubleValue() > 0 ? $F{tax}.toString()+"%" : "" ))]]></variableExpression>
+	</variable>
+	<variable name="TotalMilkAmt" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[new Double(( $F{prodtype}.intValue() == 1 ? $F{netamount}.doubleValue() - $F{subsidy}.doubleValue() : 0.00 ))
+]]></variableExpression>
+	</variable>
+	<variable name="TotalProdAmt" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[new Double(( $F{prodtype}.intValue() == 2 ? $F{netamount}.doubleValue() : 0.00 ))]]></variableExpression>
+	</variable>
+	<variable name="TotalLessAmt" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{lessamt}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="BalAmount" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{exceamt}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="TotalVatAmt1" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[new Double( ( $F{tax}.doubleValue() == 12.50 ?  $F{taxamt}.doubleValue() : 0.00 ))]]></variableExpression>
+	</variable>
+	<variable name="Totalvat" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[new Double( ( $F{tax}.doubleValue() == 04.00 ?  $F{taxamt}.doubleValue() : 0.00 ))]]></variableExpression>
+	</variable>
+	<variable name="x" class="java.lang.Double" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new Double($V{Totalvat}.doubleValue()
++ $V{TotalMilkAmt}.doubleValue() + 
+$V{TotalProdAmt}.doubleValue() + 
+$V{TotalVatAmt1}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="x1" class="java.lang.Double" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new Double($V{TotalMilkAmt}.doubleValue()+$V{TotalProdAmt}.doubleValue()
++$V{Totalvat}.doubleValue()+$V{TotalVatAmt1}.doubleValue()+$V{BalAmount}.doubleValue()
+ - $V{TotalLessAmt}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="b" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{subsidy}.doubleValue())]]></variableExpression>
+	</variable>
+
+		<group  name="product" >
+			<groupExpression><![CDATA[$F{product}]]></groupExpression>
+			<groupHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="19"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="0"
+						width="147"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{prodname}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="149"
+						y="0"
+						width="70"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{m_qty}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="222"
+						y="0"
+						width="70"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{amt}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="374"
+						y="0"
+						width="70"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{vatamt}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="455"
+						y="0"
+						width="80"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{htTotalAmt}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="297"
+						y="0"
+						width="70"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{vat}]]></textFieldExpression>
+				</textField>
+			</band>
+			</groupFooter>
+		</group>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="22"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="0"
+						y="1"
+						width="427"
+						height="20"
+						key="staticText-16"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+				<text><![CDATA[STATEMENT SHOWING SALE OF MILK & MILK PRODUTS DATED]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="408"
+						y="2"
+						width="75"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font size="14"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{FDT}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="484"
+						y="2"
+						width="75"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="14"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{TDT}]]></textFieldExpression>
+				</textField>
+			</band>
+		</title>
+		<pageHeader>
+			<band height="41"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="0"
+						y="3"
+						width="96"
+						height="19"
+						key="staticText-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[Product]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="154"
+						y="3"
+						width="70"
+						height="19"
+						key="staticText-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[Quantity]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="304"
+						y="3"
+						width="70"
+						height="19"
+						key="staticText-4"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[VAT(%)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="379"
+						y="3"
+						width="70"
+						height="19"
+						key="staticText-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[VAT.AMT]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="227"
+						y="3"
+						width="70"
+						height="19"
+						key="staticText-6"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[Amount]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="455"
+						y="3"
+						width="80"
+						height="19"
+						key="staticText-7"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[Net.Amount]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="6"
+						y="2"
+						width="529"
+						height="0"
+						key="line-6"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="6"
+						y="27"
+						width="529"
+						height="0"
+						key="line-7"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="16"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="182"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="455"
+						y="3"
+						width="80"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{TotalMilkAmt}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="278"
+						y="3"
+						width="164"
+						height="18"
+						key="staticText-8"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[Total milk Amount : ]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="455"
+						y="23"
+						width="80"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{TotalProdAmt}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="273"
+						y="23"
+						width="169"
+						height="18"
+						key="staticText-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[Total Product Amount : ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="323"
+						y="92"
+						width="119"
+						height="18"
+						key="staticText-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[Total Amount : ]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="455"
+						y="136"
+						width="80"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{TotalLessAmt}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="455"
+						y="117"
+						width="80"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{BalAmount}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="323"
+						y="117"
+						width="119"
+						height="18"
+						key="staticText-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[Balance Amount : ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="323"
+						y="136"
+						width="119"
+						height="18"
+						key="staticText-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[Less Amount : ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="323"
+						y="161"
+						width="119"
+						height="18"
+						key="staticText-13"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[GRAND TOTAL : ]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="10"
+						y="2"
+						width="525"
+						height="0"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="269"
+						y="90"
+						width="266"
+						height="0"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="268"
+						y="112"
+						width="267"
+						height="0"
+						key="line-3"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="6"
+						y="156"
+						width="529"
+						height="0"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="6"
+						y="181"
+						width="529"
+						height="0"
+						key="line-5"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="455"
+						y="67"
+						width="80"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{TotalVatAmt1}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="323"
+						y="45"
+						width="119"
+						height="18"
+						key="staticText-14"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[VAT AMT(4%) : ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="323"
+						y="67"
+						width="119"
+						height="18"
+						key="staticText-15"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[VAT AMT(12%) : ]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="455"
+						y="45"
+						width="80"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{Totalvat}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="455"
+						y="92"
+						width="80"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{x}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="455"
+						y="161"
+						width="80"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{x1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="99"
+						y="4"
+						width="74"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{b}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="0"
+						y="4"
+						width="96"
+						height="19"
+						key="staticText-17"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[Total Subsidy]]></text>
+				</staticText>
+			</band>
+		</summary>
+</jasperReport>

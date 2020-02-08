@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <context-param>
+        <param-name>com.sun.faces.verifyObjects</param-name>
+        <param-value>false</param-value>
+    </context-param>
+    <context-param>
+        <param-name>com.sun.faces.validateXml</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+        <param-value>client</param-value>
+    </context-param>
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+        </servlet>
+    <servlet>
+        
+        <servlet-name>IndentSer</servlet-name>
+        <servlet-class>serv.IndentSer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ClearCart</servlet-name>
+        <servlet-class>serv.ClearCart</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>retnSheetSer</servlet-name>
+        <servlet-class>serv.retnSheetSer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>editSheetSer</servlet-name>
+        <servlet-class>serv.editSheetSer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>gatepassSer</servlet-name>
+        <servlet-class>serv.gatepassSer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Cleargp</servlet-name>
+        <servlet-class>serv.Cleargp</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CrDrSer</servlet-name>
+        <servlet-class>serv.CrDrSer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>editgatepassSer</servlet-name>
+        <servlet-class>serv.editgatepassSer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>retnSheetSer_1</servlet-name>
+        <servlet-class>serv.retnSheetSer_1</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CashierSer</servlet-name>
+        <servlet-class>serv.receiptSer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>rptDistSheet</servlet-name>
+        <servlet-class>serv.rptDistSheet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>adjustment</servlet-name>
+        <servlet-class>serv.adjustment</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.faces</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IndentSer</servlet-name>
+        <url-pattern>/IndentSer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ClearCart</servlet-name>
+        <url-pattern>/ClearCart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>retnSheetSer</servlet-name>
+        <url-pattern>/retnSheetSer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editSheetSer</servlet-name>
+        <url-pattern>/editSheetSer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>gatepassSer</servlet-name>
+        <url-pattern>/gatepassSer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Cleargp</servlet-name>
+        <url-pattern>/Cleargp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CrDrSer</servlet-name>
+        <url-pattern>/CrDrSer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editgatepassSer</servlet-name>
+        <url-pattern>/editgatepassSer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>retnSheetSer_1</servlet-name>
+        <url-pattern>/retnSheetSer_1</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CashierSer</servlet-name>
+        <url-pattern>/CashierSer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>rptDistSheet</servlet-name>
+        <url-pattern>/rptDistSheet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>adjustment</servlet-name>
+        <url-pattern>/adjustment</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
+	<welcome-file>
+            index.jsp
+        </welcome-file>
+    </welcome-file-list>
+    
+    
+    
+    
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    
+    
+    
+    
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    
+    
+    
+    
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    
+    
+    
+    
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    
+    
+    
+    
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    
+    
+    
+    
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    <resource-ref>        
+        <res-ref-name>jdbc/kmfmktgnew</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+        <res-sharing-scope>Shareable</res-sharing-scope>        
+    </resource-ref>
+    
+    </web-app>

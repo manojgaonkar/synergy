@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =========== FULL CONFIGURATION FILE ================================== -->
+<faces-config version="1.2" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd">
+  <!-- ========== Navigation Rules ========================================= -->
+    <navigation-rule>
+        <from-view-id>/welcomeJSF.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>homepage</from-outcome>
+            <to-view-id>/homePage.jsp</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>welcomepage</from-outcome>
+            <to-view-id>/welcomeJSF.jsp</to-view-id>
+        </navigation-case>        
+  </navigation-rule>
+ 
+<!-- ========== Page Navigation for DayWork Items ========================================= -->
+
+
+<navigation-rule>
+    <from-view-id>/report/rptDistSheet.jsp</from-view-id>
+    <navigation-case>
+      <from-outcome>rptDistSheet</from-outcome>
+      <to-view-id>/report/rptDistSheet.jsp</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+ <navigation-rule>
+    <from-view-id>/route/mnuRoute.jsp</from-view-id>
+    <navigation-case>
+      <from-outcome>routePassword</from-outcome>
+      <to-view-id>/route/Routepassword.jsp</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+ <navigation-rule>
+    <from-view-id>/customer/mnuCustomer.jsp</from-view-id>
+    <navigation-case>
+      <from-outcome>customerPassword</from-outcome>
+      <to-view-id>/customer/password.jsp</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+  
+
+ <navigation-rule>
+    <from-view-id>TopFrame.jsp</from-view-id>
+    <navigation-case>
+      <from-outcome>DaySales</from-outcome>
+      <to-view-id>/DaySales.jsp</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>/indt/mnuDayWork.jsp</from-view-id>
+    <navigation-case>
+      <from-outcome>route_create</from-outcome>
+      <to-view-id>/indt/selectRoute.jsp</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>/indt/selectRoute.jsp</from-view-id>
+    <navigation-case>
+      <from-outcome>create_indent</from-outcome>
+      <to-view-id>/indt/indent.jsp</to-view-id>
+    </navigation-case>
+  </navigation-rule>  
+  
+  <navigation-rule>
+    <from-view-id>/indt/selectRoute.jsp</from-view-id>
+    <navigation-case>
+      <from-outcome>create_indentJSP</from-outcome>
+      <to-view-id>/indt/indent_1.jsp</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>/indt/mnuDayWork.jsp</from-view-id>
+    <navigation-case>
+      <from-outcome>viewIndent</from-outcome>
+      <to-view-id>/indt/viewIndent.jsp</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+<!-- ========== End ofPage Navigation for Day WorkItems ========================================= -->
+
+  <!-- ========== Page Navigation for master Items ========================================= -->
+  <navigation-rule>
+    <from-view-id>/customer/mnuCustomer.jsp</from-view-id>
+    <navigation-case>
+      <from-outcome>customer_create</from-outcome>
+      <to-view-id>/customer/customer.jsp</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+  <navigation-rule>
+    <from-view-id>/customer/mnuCustomer.jsp</from-view-id>
+    <navigation-case>
+      <from-outcome>view_create</from-outcome>
+      <to-view-id>/customer/viewCustomer.jsp</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+    
+  <navigation-rule>
+    <from-view-id>/customer/mnuCustomer.jsp</from-view-id>
+    <navigation-case>
+      <from-outcome>route_create</from-outcome>
+      <to-view-id>/customer/selectRoute.jsp</to-view-id>
+    </navigation-case>
+  </navigation-rule>   
+    
+  <navigation-rule>
+    <from-view-id>/customer/selectRoute.jsp</from-view-id>
+    <navigation-case>
+      <from-outcome>modify_customer</from-outcome>
+      <to-view-id>/customer/modifyCustomer.jsp</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+      
+  <navigation-rule>
+    <from-view-id>/product/mnuProduct.jsp</from-view-id>
+    <navigation-case>
+      <from-outcome>product_create</from-outcome>
+      <to-view-id>/product/product.jsp</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+   
+  <navigation-rule>
+    <from-view-id>/product/mnuProduct.jsp</from-view-id>
+    <navigation-case>
+      <from-outcome>LayoutORD</from-outcome>
+      <to-view-id>/product/selectState.jsp</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+  
+  
+  <navigation-rule>
+    <from-view-id>/product/selectState.jsp</from-view-id>
+    <navigation-case>
+      <from-outcome>ProdLayout</from-outcome>
+      <to-view-id>/product/layoutProd.jsp</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+  
+  
+  
+  <navigation-rule>
+    <from-view-id>/product/mnuProduct.jsp</from-view-id>
+    <navigation-case>
+      <from-outcome>product_view</from-outcome>
+      <to-view-id>/product/viewProduct.jsp</to-view-id>
+    </navigation-case>
+  </navigation-rule>  
+  
+ 
+<navigation-rule>
+    <from-view-id>/product/mnuProduct.jsp</from-view-id>
+    <navigation-case>
+      <from-outcome>password</from-outcome>
+      <to-view-id>/product/password.jsp</to-view-id>
+    </navigation-case>
+  </navigation-rule>    
+  
+  
+<navigation-rule>
+    <from-view-id>/product/password.jsp</from-view-id>
+    <navigation-case>       
+        <from-action>#{password.chkPasswd}</from-action>
+        <from-outcome>success</from-outcome>
+        <to-view-id>/product/modifyProduct.jsp</to-view-id>
+    </navigation-case>
+    <navigation-case>
+        <from-action>#{password.chkPasswd}</from-action>
+        <from-outcome>failure</from-outcome>
+        <to-view-id>/product/password.jsp</to-view-id>
+    </navigation-case>
+</navigation-rule>  
+
+    <navigation-rule>
+        <from-view-id>/customer/password.jsp</from-view-id>
+        <navigation-case>
+            <from-action>#{password.chkCustomerPasswd}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/customer/customer.jsp</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{password.chkCustomerPasswd}</from-action>
+            <from-outcome>failure</from-outcome>
+            <to-view-id>/customer/password.jsp</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/customer/mnuCustomer.jsp</from-view-id>
+        <navigation-case>          
+            <from-outcome>route_create</from-outcome>
+            <to-view-id>/customer/password.jsp</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/customer/password.jsp</from-view-id>
+        <navigation-case>
+            <from-action>#{password.chkCustomerPasswd}</from-action>
+            <from-outcome>esuccess</from-outcome>
+            <to-view-id>/customer/selectRoute.jsp</to-view-id>            
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{password.chkCustomerPasswd}</from-action>
+            <from-outcome>failure</from-outcome>
+            <to-view-id>/customer/password.jsp</to-view-id>
+        </navigation-case>
+    </navigation-rule>    
+    
+    
+    <navigation-rule>
+        <from-view-id>/indt/password.jsp</from-view-id>
+        <navigation-case>
+            <from-action>#{password.chkEditGatepass}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/indt/editGatePass.jsp</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{password.chkEditGatepass}</from-action>
+            <from-outcome>failure</from-outcome>
+            <to-view-id>/indt/password.jsp</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    
+
+<navigation-rule>
+    <from-view-id>/route/Routepassword.jsp</from-view-id>
+    <navigation-case>       
+        <from-action>#{password.chkRoutePasswd}</from-action>
+        <from-outcome>success</from-outcome>
+        <to-view-id>/route/route.jsp</to-view-id>
+    </navigation-case>
+    <navigation-case>
+        <from-action>#{password.chkRoutePasswd}</from-action>
+        <from-outcome>failure</from-outcome>
+        <to-view-id>/route/Routepassword.jsp</to-view-id>
+    </navigation-case>        
+</navigation-rule>   
+
+  <!-- ========== End of Page Navigation for master Items ========================================= -->
+  <!-- ========== Page Navigation for Route Items ========================================= -->
+  <navigation-rule>
+    <from-view-id>/mnuRoute.jsp</from-view-id>
+    <navigation-case>
+      <from-outcome>customer_create</from-outcome>
+      <to-view-id>customer.jsp</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+  <!-- ========== End of Page Navigation for Route Items ========================================= -->
+  
+  <!-- ========== Backing Beans ========================================= -->
+  <!-- Backing Bean for Customer.jsp -->
+  <managed-bean>
+    <managed-bean-name>customer</managed-bean-name>
+    <managed-bean-class>mktg.persistDatabase.customerDBAO</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>
+  <!-- Backing Bean for routeJSF.jsp -->
+  <managed-bean>
+    <managed-bean-name>route</managed-bean-name>
+    <managed-bean-class>mktg.persistDatabase.routeDBAO</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>
+  <!-- Backing Bean for TalukaJSF.jsp -->
+  <managed-bean>
+    <managed-bean-name>taluka</managed-bean-name>
+    <managed-bean-class>mktg.persistDatabase.talukaDBAO</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>
+  <!-- Backing Bean for welcomeJSF.jsp -->
+  <managed-bean>
+    <managed-bean-name>welcomeBean</managed-bean-name>
+    <managed-bean-class>mktg.backingBean.welcomeBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <!-- Backing Bean for CustomerList / modifyCustomerJSF.jsp -->
+  <managed-bean>
+    <managed-bean-name>customerUpdate</managed-bean-name>
+    <managed-bean-class>mktg.backingBean.customerUpdate</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>
+  <!-- Backing Bean for STATE -->
+  <managed-bean>
+    <managed-bean-name>stateItems</managed-bean-name>
+    <managed-bean-class>mktg.persistDatabase.entystateDBAO</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>
+  <!-- Backing Bean for TALUKA -->
+  <managed-bean>
+    <managed-bean-name>talukaItems</managed-bean-name>
+    <managed-bean-class>mktg.persistDatabase.talukaDBAO</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>
+  <!-- Backing Bean for BANK -->
+  <managed-bean>
+    <managed-bean-name>bank</managed-bean-name>
+    <managed-bean-class>mktg.persistDatabase.bankDBAO</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>
+ <!-- Backing Bean for CustomerType -->
+  <managed-bean>
+    <managed-bean-name>cstType</managed-bean-name>
+    <managed-bean-class>mktg.persistDatabase.customertypeDBAO</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>  
+  
+<!-- Backing Bean for Product -->
+  <managed-bean>
+    <managed-bean-name>product</managed-bean-name>
+    <managed-bean-class>mktg.persistDatabase.productDBAO</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>    
+  
+<!-- Backing Bean for Product Type -->
+  <managed-bean>
+    <managed-bean-name>prodtype</managed-bean-name>
+    <managed-bean-class>mktg.persistDatabase.producttypeDBAO</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>    
+  
+<!-- Backing Bean for rate -->
+  <managed-bean>
+    <managed-bean-name>rate</managed-bean-name>
+    <managed-bean-class>mktg.persistDatabase.rateDBAO</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>      
+  
+<!-- Backing Bean for rate -->
+  <managed-bean>
+    <managed-bean-name>indent</managed-bean-name>
+    <managed-bean-class>mktg.persistDatabase.indentDBAO</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>        
+  
+<!-- Backing Bean for layoutProd -->
+  <managed-bean>
+    <managed-bean-name>layout</managed-bean-name>
+    <managed-bean-class>mktg.backingBean.layoutProd</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>          
+  
+<!-- Backing Bean for DaySales -->
+  <managed-bean>
+    <managed-bean-name>daysales</managed-bean-name>
+    <managed-bean-class>mktg.backingBean.DaySales</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>                 
+  
+<!-- Backing Bean for addRoute -->
+  <managed-bean>
+    <managed-bean-name>addroute</managed-bean-name>
+    <managed-bean-class>mktg.persistDatabase.addRoute</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>                 
+  
+<!--   Refresh Indent -->
+    <managed-bean>
+        <managed-bean-name>refreshIndent</managed-bean-name>
+        <managed-bean-class>mktg.backingBean.refreshIndent</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+  
+<!-- Backing Bean for Password -->
+  <managed-bean>     
+    <managed-bean-name>password</managed-bean-name>
+    <managed-bean-class>mktg.backingBean.Password</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>  
+  
+  
+  <!-- Backing Bean for new User Accounts -->
+  <managed-bean>     
+    <managed-bean-name>newuser</managed-bean-name>
+    <managed-bean-class>mktg.backingBean.newUser</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>    
+  
+  
+  <!--  Report Bean -->
+  <managed-bean>
+      <managed-bean-name>rptDistBean</managed-bean-name>
+      <managed-bean-class>mktg.persistDatabase.rptDistSheetBean</managed-bean-class>
+      <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>
+  
+  <managed-bean>
+      <managed-bean-name>rptRemmitBean</managed-bean-name>
+      <managed-bean-class>mktg.persistDatabase.rptRemmitSlip</managed-bean-class>
+      <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>  
+  
+
+</faces-config>
