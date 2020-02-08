@@ -25,7 +25,7 @@ $.ajax('http://msg.icloudsms.com/rest/services/sendSMS/sendGroupSms?AUTH_KEY=1ff
 header: {'Access-Control-Allow-Origin':'*'},
 success: function (data, status, xhr) {
 alert('Success');
-alert(data);
+//alert(data) this is how it works.!;
 },
 error: function (jqXhr, textStatus, errorMessage) {
 console.log('---------------');
